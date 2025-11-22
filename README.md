@@ -29,12 +29,7 @@
 
 ## 📦 Installation
 
-### Option 1: Download Pre-built App
-1. Download the latest release from [Releases](https://github.com/512z/Prompter/releases)
-2. Unzip and move `Prompter.app` to `/Applications`
-3. Right-click and select "Open" (first time only)
-
-### Option 2: Build from Source
+### Build from Source
 ```bash
 # Clone the repository
 git clone https://github.com/512z/Prompter.git
@@ -46,9 +41,35 @@ open Prompter.xcodeproj
 # Build and run (Cmd+R)
 ```
 
+### Copy to Applications Folder
+
+After building in Xcode, install the app permanently:
+
+**Option A: Export via Xcode (Recommended)**
+1. In Xcode: **Product** → **Archive** (wait for build to complete)
+2. Click **Distribute App**
+3. Select **Copy App**
+4. Choose `/Applications` as the destination
+5. Click **Export**
+
+**Option B: Manual Copy**
+```bash
+# Build once in Xcode (Cmd+B), then:
+# Find and copy the built app
+cp -r ~/Library/Developer/Xcode/DerivedData/Prompter-*/Build/Products/Debug/Prompter.app /Applications/
+
+# Launch from Applications
+open /Applications/Prompter.app
+```
+
+**First Launch:**
+- If you see "cannot be opened" warning, right-click the app and select **Open**
+- Grant notification permissions when prompted
+- Grant Accessibility permissions for global hotkey: **System Settings → Privacy & Security → Accessibility**
+
 **Requirements:**
 - macOS 13.0 or later
-- Xcode 15.0 or later (for building from source)
+- Xcode 15.0 or later
 
 ## 🚀 Quick Start
 
