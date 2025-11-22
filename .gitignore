@@ -27,7 +27,10 @@ Carthage/Build/
 
 # SwiftPM
 .swiftpm/
-*.xcodeproj
+# Keep project.pbxproj but ignore user data
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/*.xcworkspace
 
 # macOS
 .DS_Store
