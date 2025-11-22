@@ -15,6 +15,7 @@ struct PrompterApp: App {
 class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem?
     var popover = NSPopover()
+    var customWindow: NSWindow?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Request notification permissions
@@ -52,33 +53,71 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc func togglePopover() {
-        if let button = statusItem?.button {
-            if popover.isShown {
-                popover.performClose(nil)
-            } else {
-                popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+        if customWindow?.isVisible == true {
+            closeCustomWindow()
+        } else {
+            showCustomWindow()
+        }
+    }
 
-                // Add glassmorphism effect to popover background
-                DispatchQueue.main.async { [weak self] in
-                    guard let window = self?.popover.contentViewController?.view.window,
-                          let frameView = window.contentView?.superview else { return }
+    func showCustomWindow() {
+        guard let button = statusItem?.button else { return }
 
-                    // Make window transparent
-                    window.backgroundColor = .clear
-                    window.isOpaque = false
+        // Create custom window if needed
+        if customWindow == nil {
+            let window = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 360, height: 500),
+                styleMask: [.borderless, .fullSizeContentView],
+                backing: .buffered,
+                defer: false
+            )
 
-                    // Add visual effect view to frameView (popover's background)
-                    let visualEffect = NSVisualEffectView(frame: frameView.bounds)
-                    visualEffect.material = .hudWindow
-                    visualEffect.blendingMode = .behindWindow
-                    visualEffect.state = .active
-                    visualEffect.autoresizingMask = [.width, .height]
-                    visualEffect.wantsLayer = true
+            window.backgroundColor = .clear
+            window.isOpaque = false
+            window.hasShadow = true
+            window.level = .floating
+            window.collectionBehavior = [.canJoinAllSpaces, .stationary]
 
-                    // Insert behind everything
-                    frameView.addSubview(visualEffect, positioned: .below, relativeTo: frameView)
-                }
+            // Create visual effect view with rounded corners
+            let visualEffect = NSVisualEffectView(frame: window.contentView!.bounds)
+            visualEffect.material = .hudWindow
+            visualEffect.blendingMode = .behindWindow
+            visualEffect.state = .active
+            visualEffect.autoresizingMask = [.width, .height]
+            visualEffect.wantsLayer = true
+            visualEffect.layer?.cornerRadius = 12
+            visualEffect.layer?.masksToBounds = true
+
+            // Add SwiftUI content
+            let hostingView = NSHostingController(rootView: MenuBarPopover())
+            hostingView.view.frame = window.contentView!.bounds
+            hostingView.view.autoresizingMask = [.width, .height]
+            hostingView.view.wantsLayer = true
+            hostingView.view.layer?.backgroundColor = .clear
+
+            window.contentView?.addSubview(visualEffect)
+            window.contentView?.addSubview(hostingView.view)
+
+            customWindow = window
+        }
+
+        // Position window below menu bar button
+        if let window = customWindow {
+            let buttonFrame = button.window!.convertToScreen(button.convert(button.bounds, to: nil))
+            let windowX = buttonFrame.midX - window.frame.width / 2
+            let windowY = buttonFrame.minY - window.frame.height - 8
+
+            window.setFrameOrigin(NSPoint(x: windowX, y: windowY))
+            window.makeKeyAndOrderFront(nil)
+
+            // Monitor clicks outside
+            NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { [weak self] _ in
+                self?.closeCustomWindow()
             }
         }
+    }
+
+    func closeCustomWindow() {
+        customWindow?.orderOut(nil)
     }
 }
