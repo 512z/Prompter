@@ -18,12 +18,12 @@
 
 ## ✨ Features
 
+- ✨ **AI Enhancement** - Optimize prompts using Gemini API (optional)
 - 🎯 **Menu Bar Integration** - Quick access from the macOS menu bar
 - 📁 **Category Organization** - Organize prompts by categories (Coding, Writing, Research, etc.)
 - 🔍 **Quick Search** - Filter prompts by title or content
 - 📋 **One-Click Copy** - Copy prompts to clipboard with a single click
 - ✏️ **CRUD Operations** - Create, read, update, and delete prompts
-- ✨ **AI Enhancement** - Optimize prompts using Gemini API (optional)
 - 💾 **Import/Export** - Backup and share your prompts as JSON
 - ⌨️ **Global Hotkey** - Press `Cmd+Shift+P` to toggle the app from anywhere
 - 💿 **Persistent Storage** - Prompts saved automatically to disk
