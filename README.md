@@ -23,6 +23,7 @@
 - 🔍 **Quick Search** - Filter prompts by title or content
 - 📋 **One-Click Copy** - Copy prompts to clipboard with a single click
 - ✏️ **CRUD Operations** - Create, read, update, and delete prompts
+- ✨ **AI Enhancement** - Optimize prompts using Gemini API (optional)
 - 💾 **Import/Export** - Backup and share your prompts as JSON
 - ⌨️ **Global Hotkey** - Press `Cmd+Shift+P` to toggle the app from anywhere
 - 💿 **Persistent Storage** - Prompts saved automatically to disk
@@ -91,6 +92,30 @@ open /Applications/Prompter.app
 - **Copy**: Click the 📄 icon to copy prompt to clipboard
 - **Edit**: Click the ✏️ icon to modify a prompt
 - **Delete**: Click the 🗑️ icon to remove a prompt
+
+## ✨ AI Enhancement (Optional)
+
+Optimize your prompts using Google's Gemini AI to make them more effective and structured.
+
+### Setup
+1. Click the **`⋯`** menu → **Settings**
+2. Toggle **"AI Enhancement"** ON
+3. Enter your Gemini API key
+   - Get a free API key from [Google AI Studio](https://aistudio.google.com/apikey)
+4. Click **Save**
+
+### Using AI Optimize
+1. When creating or editing a prompt, click **"✨ AI Optimize"**
+2. Wait a few seconds while Gemini enhances your prompt
+3. Review the optimized version and make any adjustments
+4. Save the prompt
+
+The AI will improve your prompt by making it more:
+- **Clear and specific** - Better structured instructions
+- **Contextual** - Adds relevant context where needed
+- **Effective** - Optimized for better AI responses
+
+> **Note:** AI optimization requires an active internet connection and a valid Gemini API key.
 
 ## ⌨️ Keyboard Shortcuts
 

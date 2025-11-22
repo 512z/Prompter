@@ -3,6 +3,7 @@ import SwiftUI
 struct PromptEditorView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var dataManager: DataManager
+    @ObservedObject var settings: SettingsManager
 
     let prompt: Prompt?
 
@@ -11,9 +12,12 @@ struct PromptEditorView: View {
     @State private var category: String
     @State private var showingNewCategory = false
     @State private var newCategoryName = ""
+    @State private var isOptimizing = false
+    @State private var errorMessage: String?
 
-    init(dataManager: DataManager, prompt: Prompt?) {
+    init(dataManager: DataManager, settings: SettingsManager, prompt: Prompt?) {
         self.dataManager = dataManager
+        self.settings = settings
         self.prompt = prompt
         _title = State(initialValue: prompt?.title ?? "")
         _content = State(initialValue: prompt?.content ?? "")
@@ -69,14 +73,48 @@ struct PromptEditorView: View {
             }
 
             VStack(alignment: .leading, spacing: 4) {
-                Text("Content")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                HStack {
+                    Text("Content")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+
+                    Spacer()
+
+                    if settings.isConfigured {
+                        Button(action: optimizePrompt) {
+                            HStack(spacing: 4) {
+                                if isOptimizing {
+                                    ProgressView()
+                                        .scaleEffect(0.7)
+                                        .frame(width: 12, height: 12)
+                                } else {
+                                    Image(systemName: "sparkles")
+                                        .font(.caption)
+                                }
+                                Text(isOptimizing ? "Optimizing..." : "AI Optimize")
+                                    .font(.caption)
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(content.isEmpty || isOptimizing)
+                        .help("Optimize this prompt using AI")
+                    }
+                }
 
                 TextEditor(text: $content)
                     .font(.body)
                     .frame(height: 200)
                     .border(Color.gray.opacity(0.2))
+
+                if let error = errorMessage {
+                    HStack {
+                        Image(systemName: "exclamationmark.triangle")
+                            .foregroundColor(.red)
+                        Text(error)
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    }
+                }
             }
 
             HStack {
@@ -122,5 +160,31 @@ struct PromptEditorView: View {
         }
 
         dismiss()
+    }
+
+    func optimizePrompt() {
+        guard !content.isEmpty else { return }
+
+        isOptimizing = true
+        errorMessage = nil
+
+        Task {
+            do {
+                let optimized = try await GeminiService.shared.optimizePrompt(
+                    originalPrompt: content,
+                    apiKey: settings.geminiApiKey
+                )
+
+                await MainActor.run {
+                    content = optimized
+                    isOptimizing = false
+                }
+            } catch {
+                await MainActor.run {
+                    errorMessage = error.localizedDescription
+                    isOptimizing = false
+                }
+            }
+        }
     }
 }

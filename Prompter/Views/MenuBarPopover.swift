@@ -3,10 +3,12 @@ import UserNotifications
 
 struct MenuBarPopover: View {
     @StateObject private var dataManager = DataManager()
+    @StateObject private var settings = SettingsManager()
     @State private var searchText = ""
     @State private var selectedCategory: String?
     @State private var showingEditor = false
     @State private var editingPrompt: Prompt?
+    @State private var showingSettings = false
 
     var filteredPrompts: [Prompt] {
         let categoryFiltered = selectedCategory == nil ? dataManager.prompts : dataManager.prompts.filter { $0.category == selectedCategory }
@@ -33,6 +35,8 @@ struct MenuBarPopover: View {
                     .help("Add new prompt")
 
                     Menu {
+                        Button("Settings") { showingSettings = true }
+                        Divider()
                         Button("Export Prompts") { exportPrompts() }
                         Button("Import Prompts") { importPrompts() }
                     } label: {
@@ -113,7 +117,10 @@ struct MenuBarPopover: View {
         }
         .frame(width: 360, height: 500)
         .sheet(isPresented: $showingEditor) {
-            PromptEditorView(dataManager: dataManager, prompt: editingPrompt)
+            PromptEditorView(dataManager: dataManager, settings: settings, prompt: editingPrompt)
+        }
+        .sheet(isPresented: $showingSettings) {
+            SettingsView(settings: settings)
         }
     }
 
