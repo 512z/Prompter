@@ -32,6 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Configure popover
         popover.contentSize = NSSize(width: 360, height: 500)
         popover.behavior = .transient
+        popover.animates = true
         popover.contentViewController = NSHostingController(rootView: MenuBarPopover())
 
         // Register global hotkey (Cmd+Shift+P)
@@ -46,7 +47,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 popover.performClose(nil)
             } else {
                 popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
-                popover.contentViewController?.view.window?.makeKey()
+                NSApp.activate(ignoringOtherApps: true)
             }
         }
     }

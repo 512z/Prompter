@@ -116,6 +116,8 @@ struct MenuBarPopover: View {
             .padding(.vertical, 8)
         }
         .frame(width: 360, height: 500)
+        .background(.ultraThinMaterial)
+        .cornerRadius(12)
         .sheet(isPresented: $showingEditor) {
             PromptEditorView(dataManager: dataManager, settings: settings, prompt: editingPrompt)
         }

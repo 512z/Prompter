@@ -17,7 +17,7 @@ class GeminiService {
 
         Keep the core intent of the original prompt but make it significantly better.
 
-        IMPORTANT: You must ONLY return the optimized prompt itself. Do NOT include any explanations, commentary, or meta-discussion about why it's better. Return ONLY the improved prompt text.
+        *IMPORTANT*: You must ONLY return the optimized prompt itself. Do NOT include any explanations, commentary, or meta-discussion about why it's better. Return ONLY the improved prompt text.
 
         Original prompt:
         """
