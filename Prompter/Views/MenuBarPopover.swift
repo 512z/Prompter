@@ -116,8 +116,7 @@ struct MenuBarPopover: View {
             .padding(.vertical, 8)
         }
         .frame(width: 360, height: 500)
-        .background(Color(NSColor.windowBackgroundColor).opacity(0.8))
-        .cornerRadius(12)
+        .background(.regularMaterial)
         .sheet(isPresented: $showingEditor) {
             PromptEditorView(dataManager: dataManager, settings: settings, prompt: editingPrompt)
         }

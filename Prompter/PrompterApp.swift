@@ -55,6 +55,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 popover.performClose(nil)
             } else {
                 popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+
+                // Make popover background translucent
+                DispatchQueue.main.async { [weak self] in
+                    if let popoverWindow = self?.popover.contentViewController?.view.window {
+                        popoverWindow.backgroundColor = .clear
+                        popoverWindow.isOpaque = false
+
+                        // Find and configure the background view
+                        if let backgroundView = popoverWindow.contentView?.superview {
+                            let visualEffect = NSVisualEffectView()
+                            visualEffect.material = .hudWindow
+                            visualEffect.blendingMode = .behindWindow
+                            visualEffect.state = .active
+                            visualEffect.frame = backgroundView.bounds
+                            visualEffect.autoresizingMask = [.width, .height]
+                            backgroundView.addSubview(visualEffect, positioned: .below, relativeTo: nil)
+                        }
+                    }
+                }
             }
         }
     }
