@@ -1,5 +1,6 @@
 import SwiftUI
 import UserNotifications
+import UniformTypeIdentifiers
 
 struct MenuBarPopover: View {
     @StateObject private var dataManager = DataManager()
@@ -61,10 +62,18 @@ struct MenuBarPopover: View {
                             selectedCategory = nil
                         }
 
-                        ForEach(dataManager.categories, id: \.self) { category in
+                        ForEach(Array(dataManager.categories.enumerated()), id: \.element) { index, category in
                             CategoryChip(title: category, isSelected: selectedCategory == category) {
                                 selectedCategory = category
                             }
+                            .onDrag {
+                                NSItemProvider(object: category as NSString)
+                            }
+                            .onDrop(of: [.text], delegate: CategoryDropDelegate(
+                                category: category,
+                                categories: dataManager.categories,
+                                dataManager: dataManager
+                            ))
                         }
                     }
                     .padding(.horizontal)
@@ -93,6 +102,12 @@ struct MenuBarPopover: View {
                         }, onDelete: {
                             dataManager.deletePrompt(prompt)
                         })
+                    }
+                    .onMove { source, destination in
+                        // Only allow reordering when showing all prompts (no filter)
+                        if searchText.isEmpty && selectedCategory == nil {
+                            dataManager.movePrompt(from: source, to: destination)
+                        }
                     }
                 }
                 .listStyle(.plain)
@@ -231,5 +246,33 @@ struct PromptRow: View {
 
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
+    }
+}
+
+// Drag and drop delegate for category chips
+struct CategoryDropDelegate: DropDelegate {
+    let category: String
+    let categories: [String]
+    let dataManager: DataManager
+
+    func performDrop(info: DropInfo) -> Bool {
+        return true
+    }
+
+    func dropEntered(info: DropInfo) {
+        guard let fromIndex = categories.firstIndex(of: category) else { return }
+
+        // Get the dragged category name
+        if let itemProvider = info.itemProviders(for: [.text]).first {
+            _ = itemProvider.loadObject(ofClass: NSString.self) { draggedCategory, _ in
+                if let draggedCategoryString = draggedCategory as? String,
+                   let toIndex = self.categories.firstIndex(of: draggedCategoryString),
+                   fromIndex != toIndex {
+                    DispatchQueue.main.async {
+                        self.dataManager.moveCategory(from: toIndex, to: fromIndex)
+                    }
+                }
+            }
+        }
     }
 }

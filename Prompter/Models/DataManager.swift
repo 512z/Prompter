@@ -2,6 +2,7 @@ import Foundation
 
 class DataManager: ObservableObject {
     @Published var prompts: [Prompt] = []
+    @Published var categoryOrder: [String] = []
 
     private let fileURL: URL
 
@@ -15,11 +16,17 @@ class DataManager: ObservableObject {
 
         fileURL = appDirectory.appendingPathComponent("prompts.json")
         loadPrompts()
+        loadCategoryOrder()
     }
 
     var categories: [String] {
         let uniqueCategories = Set(prompts.map { $0.category })
-        return uniqueCategories.sorted()
+
+        // Sort based on saved order, then alphabetically for new categories
+        let orderedCategories = categoryOrder.filter { uniqueCategories.contains($0) }
+        let newCategories = uniqueCategories.subtracting(categoryOrder).sorted()
+
+        return orderedCategories + newCategories
     }
 
     func loadPrompts() {
@@ -76,5 +83,28 @@ class DataManager: ObservableObject {
         let importedPrompts = try JSONDecoder().decode([Prompt].self, from: data)
         prompts.append(contentsOf: importedPrompts)
         savePrompts()
+    }
+
+    func movePrompt(from source: IndexSet, to destination: Int) {
+        prompts.move(fromOffsets: source, toOffset: destination)
+        savePrompts()
+    }
+
+    func loadCategoryOrder() {
+        if let saved = UserDefaults.standard.array(forKey: "categoryOrder") as? [String] {
+            categoryOrder = saved
+        }
+    }
+
+    func saveCategoryOrder() {
+        UserDefaults.standard.set(categoryOrder, forKey: "categoryOrder")
+    }
+
+    func moveCategory(from source: Int, to destination: Int) {
+        var mutableCategories = categories
+        let item = mutableCategories.remove(at: source)
+        mutableCategories.insert(item, at: destination)
+        categoryOrder = mutableCategories
+        saveCategoryOrder()
     }
 }
