@@ -18,7 +18,7 @@
 
 ## ✨ Features
 
-- ✨ **AI Enhancement** - Optimize prompts using Gemini API (optional)
+- 🤖 **AI Enhancement** - Optimize prompts using Gemini API (optional)
 - 🎯 **Menu Bar Integration** - Quick access from the macOS menu bar
 - 📁 **Category Organization** - Organize prompts by categories (Coding, Writing, Research, etc.)
 - 🔍 **Quick Search** - Filter prompts by title or content
