@@ -33,7 +33,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         popover.contentSize = NSSize(width: 360, height: 500)
         popover.behavior = .transient
         popover.animates = true
-        popover.hasFullSizeContent = true  // macOS 14+ for full customization
+
+        // Enable full customization on macOS 14+
+        if #available(macOS 14.0, *) {
+            popover.hasFullSizeContent = true
+        }
 
         // Create hosting controller with transparent background
         let hostingController = NSHostingController(rootView: MenuBarPopover())
