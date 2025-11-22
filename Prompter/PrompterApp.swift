@@ -25,20 +25,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
         if let button = statusItem?.button {
-            // Create custom icon using SwiftUI
-            let iconView = PrompterIcon(size: 18)
-            let hostingView = NSHostingController(rootView: iconView)
-            hostingView.view.frame = CGRect(x: 0, y: 0, width: 18, height: 18)
+            // Create custom icon using SwiftUI with ImageRenderer
+            if #available(macOS 12.0, *) {
+                let iconView = PrompterIcon(size: 18)
+                let renderer = ImageRenderer(content: iconView)
+                renderer.proposedSize = .init(width: 18, height: 18)
 
-            // Render to image
-            let image = NSImage(size: NSSize(width: 18, height: 18))
-            image.lockFocus()
-            if let context = NSGraphicsContext.current?.cgContext {
-                hostingView.view.layer?.render(in: context)
+                if let nsImage = renderer.nsImage {
+                    button.image = nsImage
+                }
+            } else {
+                // Fallback for older macOS versions
+                button.image = NSImage(systemSymbolName: "text.bubble", accessibilityDescription: "Prompter")
             }
-            image.unlockFocus()
 
-            button.image = image
             button.action = #selector(togglePopover)
             button.target = self
         }
