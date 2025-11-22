@@ -116,7 +116,12 @@ struct MenuBarPopover: View {
             .padding(.vertical, 8)
         }
         .frame(width: 360, height: 500)
-        .background(.ultraThinMaterial)
+        .background(
+            ZStack {
+                Color.clear
+                VisualEffectBlur(material: .hudWindow, blendingMode: .behindWindow)
+            }
+        )
         .cornerRadius(12)
         .sheet(isPresented: $showingEditor) {
             PromptEditorView(dataManager: dataManager, settings: settings, prompt: editingPrompt)
@@ -232,5 +237,24 @@ struct PromptRow: View {
 
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
+    }
+}
+
+// Visual Effect Blur for glassmorphism
+struct VisualEffectBlur: NSViewRepresentable {
+    var material: NSVisualEffectView.Material
+    var blendingMode: NSVisualEffectView.BlendingMode
+
+    func makeNSView(context: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        view.material = material
+        view.blendingMode = blendingMode
+        view.state = .active
+        return view
+    }
+
+    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
+        nsView.material = material
+        nsView.blendingMode = blendingMode
     }
 }
