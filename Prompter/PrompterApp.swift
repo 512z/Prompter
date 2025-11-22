@@ -33,15 +33,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         popover.contentSize = NSSize(width: 360, height: 500)
         popover.behavior = .transient
         popover.animates = true
+        popover.hasFullSizeContent = true  // macOS 14+ for full customization
 
         // Create hosting controller with transparent background
         let hostingController = NSHostingController(rootView: MenuBarPopover())
         hostingController.view.wantsLayer = true
         hostingController.view.layer?.backgroundColor = NSColor.clear.cgColor
         popover.contentViewController = hostingController
-
-        // Make popover background translucent
-        popover.appearance = NSAppearance(named: .vibrantLight)
 
         // Register global hotkey (Cmd+Shift+P)
         HotKeyManager.shared.registerDefaultHotKey { [weak self] in
@@ -56,23 +54,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             } else {
                 popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
 
-                // Make popover background translucent
+                // Add glassmorphism effect to popover background
                 DispatchQueue.main.async { [weak self] in
-                    if let popoverWindow = self?.popover.contentViewController?.view.window {
-                        popoverWindow.backgroundColor = .clear
-                        popoverWindow.isOpaque = false
+                    guard let window = self?.popover.contentViewController?.view.window,
+                          let frameView = window.contentView?.superview else { return }
 
-                        // Find and configure the background view
-                        if let backgroundView = popoverWindow.contentView?.superview {
-                            let visualEffect = NSVisualEffectView()
-                            visualEffect.material = .hudWindow
-                            visualEffect.blendingMode = .behindWindow
-                            visualEffect.state = .active
-                            visualEffect.frame = backgroundView.bounds
-                            visualEffect.autoresizingMask = [.width, .height]
-                            backgroundView.addSubview(visualEffect, positioned: .below, relativeTo: nil)
-                        }
-                    }
+                    // Make window transparent
+                    window.backgroundColor = .clear
+                    window.isOpaque = false
+
+                    // Add visual effect view to frameView (popover's background)
+                    let visualEffect = NSVisualEffectView(frame: frameView.bounds)
+                    visualEffect.material = .hudWindow
+                    visualEffect.blendingMode = .behindWindow
+                    visualEffect.state = .active
+                    visualEffect.autoresizingMask = [.width, .height]
+                    visualEffect.wantsLayer = true
+
+                    // Insert behind everything
+                    frameView.addSubview(visualEffect, positioned: .below, relativeTo: frameView)
                 }
             }
         }
