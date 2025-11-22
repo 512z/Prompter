@@ -95,27 +95,113 @@ open /Applications/Prompter.app
 
 ## ✨ AI Enhancement (Optional)
 
-Optimize your prompts using Google's Gemini AI to make them more effective and structured.
+Transform your prompts into professional, highly-effective instructions using Google's **Gemini 2.5 Flash Lite** AI model. The AI Enhancement feature automatically restructures, clarifies, and optimizes your prompts for better AI interactions.
 
-### Setup
-1. Click the **`⋯`** menu → **Settings**
-2. Toggle **"AI Enhancement"** ON
-3. Enter your Gemini API key
-   - Get a free API key from [Google AI Studio](https://aistudio.google.com/apikey)
-4. Click **Save**
+### Why Use AI Optimize?
+- 🎯 **Professional Prompt Engineering** - Applies best practices automatically
+- 📈 **Better Results** - Optimized prompts = better AI responses
+- ⚡ **Fast** - Powered by Gemini 2.5 Flash Lite (optimized for speed)
+- 🔒 **Secure** - Your API key is stored locally, never shared
 
-### Using AI Optimize
-1. When creating or editing a prompt, click **"✨ AI Optimize"**
-2. Wait a few seconds while Gemini enhances your prompt
-3. Review the optimized version and make any adjustments
-4. Save the prompt
+### Setup (One-Time)
 
-The AI will improve your prompt by making it more:
-- **Clear and specific** - Better structured instructions
-- **Contextual** - Adds relevant context where needed
-- **Effective** - Optimized for better AI responses
+1. **Get a Free API Key**
+   - Visit [Google AI Studio](https://aistudio.google.com/apikey)
+   - Sign in with your Google account
+   - Click "Create API Key"
+   - Copy your key
 
-> **Note:** AI optimization requires an active internet connection and a valid Gemini API key.
+2. **Configure Prompter**
+   - Click the **`⋯`** menu in Prompter → **Settings**
+   - Toggle **"AI Enhancement"** ON
+   - Paste your Gemini API key
+   - Click **Save**
+
+### How to Use
+
+1. **Create or Edit a Prompt**
+   - Click the `+` button to create a new prompt
+   - Or click the ✏️ icon on an existing prompt
+
+2. **Write Your Basic Prompt**
+   - Enter your prompt idea in the Content field
+   - It can be rough or simple - AI will improve it!
+
+3. **Click "✨ AI Optimize"**
+   - The button appears in the top-right of the Content field
+   - Wait 2-3 seconds while Gemini processes
+
+4. **Review & Save**
+   - Your prompt is automatically replaced with the optimized version
+   - Review the changes
+   - Make any final adjustments
+   - Click "Save"
+
+### What Gets Optimized?
+
+The AI transforms your prompts by:
+
+| Before | After |
+|--------|-------|
+| Vague instructions | **Clear, specific guidance** |
+| Unstructured text | **Well-formatted with sections** |
+| Missing context | **Relevant context added** |
+| Simple requests | **Detailed, actionable prompts** |
+
+### Example
+
+**Before Optimization:**
+```
+Write a blog post about AI
+```
+
+**After AI Optimize:**
+```
+You are an expert content writer specializing in technology and AI.
+
+Write a comprehensive blog post about AI with the following structure:
+1. Introduction: Hook the reader with a compelling statement about AI's impact
+2. Main Content:
+   - Explain what AI is in accessible terms
+   - Discuss 3-4 current real-world applications
+   - Address common misconceptions
+3. Conclusion: Future outlook and takeaways
+
+Target Audience: Tech-curious professionals
+Tone: Informative yet conversational
+Length: 800-1000 words
+```
+
+### Technical Details
+
+- **Model**: Gemini 2.5 Flash Lite (Google's fastest model)
+- **Processing**: Direct API calls (no data stored by Prompter)
+- **Cost**: Free tier available (check [Google AI Studio](https://aistudio.google.com/pricing))
+- **Requirements**: Active internet connection
+
+### Tips for Best Results
+
+1. ✅ **Start with your core idea** - The AI will expand and structure it
+2. ✅ **Include key requirements** - Mention tone, audience, or format you want
+3. ✅ **Iterate** - Run AI Optimize multiple times for variations
+4. ✅ **Edit after optimization** - Fine-tune the optimized prompt to your needs
+
+### Troubleshooting
+
+**"API error" message:**
+- Check your API key is correct in Settings
+- Verify your API key is active at [Google AI Studio](https://aistudio.google.com/apikey)
+- Check internet connection
+
+**Button doesn't appear:**
+- Make sure AI Enhancement is enabled in Settings
+- Verify you've entered an API key
+
+**Slow response:**
+- Normal processing time is 2-5 seconds
+- Check your internet speed
+
+> **Privacy Note:** Your API key and prompts are only sent to Google's Gemini API for processing. Prompter does not store, log, or share your data. All API calls are made directly from your machine to Google's servers.
 
 ## ⌨️ Keyboard Shortcuts
 
