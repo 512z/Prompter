@@ -33,7 +33,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         popover.contentSize = NSSize(width: 360, height: 500)
         popover.behavior = .transient
         popover.animates = true
-        popover.contentViewController = NSHostingController(rootView: MenuBarPopover())
+
+        // Create hosting controller with transparent background
+        let hostingController = NSHostingController(rootView: MenuBarPopover())
+        hostingController.view.wantsLayer = true
+        hostingController.view.layer?.backgroundColor = NSColor.clear.cgColor
+        popover.contentViewController = hostingController
+
+        // Make popover background translucent
+        popover.appearance = NSAppearance(named: .vibrantLight)
 
         // Register global hotkey (Cmd+Shift+P)
         HotKeyManager.shared.registerDefaultHotKey { [weak self] in

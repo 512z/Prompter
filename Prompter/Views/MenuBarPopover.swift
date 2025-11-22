@@ -24,13 +24,8 @@ struct MenuBarPopover: View {
             // Header with search
             VStack(spacing: 8) {
                 HStack {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Prompter")
-                            .font(.headline)
-                        Text("v2.0 TEST")
-                            .font(.caption2)
-                            .foregroundColor(.red)
-                    }
+                    Text("Prompter")
+                        .font(.headline)
                     Spacer()
                     Button(action: { showingEditor = true; editingPrompt = nil }) {
                         Image(systemName: "plus.circle.fill")
@@ -121,12 +116,7 @@ struct MenuBarPopover: View {
             .padding(.vertical, 8)
         }
         .frame(width: 360, height: 500)
-        .background(
-            ZStack {
-                Color.clear
-                VisualEffectBlur(material: .hudWindow, blendingMode: .behindWindow)
-            }
-        )
+        .background(Color(NSColor.windowBackgroundColor).opacity(0.8))
         .cornerRadius(12)
         .sheet(isPresented: $showingEditor) {
             PromptEditorView(dataManager: dataManager, settings: settings, prompt: editingPrompt)
@@ -242,24 +232,5 @@ struct PromptRow: View {
 
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
-    }
-}
-
-// Visual Effect Blur for glassmorphism
-struct VisualEffectBlur: NSViewRepresentable {
-    var material: NSVisualEffectView.Material
-    var blendingMode: NSVisualEffectView.BlendingMode
-
-    func makeNSView(context: Context) -> NSVisualEffectView {
-        let view = NSVisualEffectView()
-        view.material = material
-        view.blendingMode = blendingMode
-        view.state = .active
-        return view
-    }
-
-    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
-        nsView.material = material
-        nsView.blendingMode = blendingMode
     }
 }
