@@ -24,8 +24,13 @@ struct MenuBarPopover: View {
             // Header with search
             VStack(spacing: 8) {
                 HStack {
-                    Text("Prompter")
-                        .font(.headline)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Prompter")
+                            .font(.headline)
+                        Text("v2.0 TEST")
+                            .font(.caption2)
+                            .foregroundColor(.red)
+                    }
                     Spacer()
                     Button(action: { showingEditor = true; editingPrompt = nil }) {
                         Image(systemName: "plus.circle.fill")
