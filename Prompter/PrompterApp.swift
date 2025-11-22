@@ -25,18 +25,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
         if let button = statusItem?.button {
-            // Create custom icon using SwiftUI with ImageRenderer
-            if #available(macOS 12.0, *) {
-                let iconView = PrompterIcon(size: 18)
-                let renderer = ImageRenderer(content: iconView)
-                renderer.proposedSize = .init(width: 18, height: 18)
-
-                if let nsImage = renderer.nsImage {
-                    button.image = nsImage
-                }
-            } else {
-                // Fallback for older macOS versions
-                button.image = NSImage(systemSymbolName: "text.bubble", accessibilityDescription: "Prompter")
+            // Use simple SF Symbol for menu bar
+            if let image = NSImage(systemSymbolName: "text.bubble", accessibilityDescription: "Prompter") {
+                image.isTemplate = true // Makes it monochrome white
+                button.image = image
             }
 
             button.action = #selector(togglePopover)
