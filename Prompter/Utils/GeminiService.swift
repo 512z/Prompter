@@ -22,7 +22,7 @@ class GeminiService {
 
         let fullPrompt = systemPrompt + "\n\n" + originalPrompt
 
-        let url = URL(string: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=\(apiKey)")!
+        let url = URL(string: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=\(apiKey)")!
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
